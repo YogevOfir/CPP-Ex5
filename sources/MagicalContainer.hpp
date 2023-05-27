@@ -3,6 +3,7 @@
 
 #include <iterator>
 #include <list>
+#include <set>
 
 using namespace std;
 
@@ -11,7 +12,7 @@ class MagicalContainer
 
     private:
         list<int> originalElem;
-        list<int> sortedElem;
+        multiset<int> sortedElem;
         list<int> crossElem;
         list<int> primeElem;
 
@@ -34,7 +35,7 @@ class MagicalContainer
     {
         private:
             MagicalContainer& container;
-            list<int>::iterator iter;
+            multiset<int>::iterator iter;
             size_t pos;
 
         public:
@@ -49,7 +50,7 @@ class MagicalContainer
 
             // Operators
             AscendingIterator& operator++(); 
-            int& operator*(); // dereference operator
+            int operator*(); // dereference operator
             
             size_t getPos() const {return pos;}
 

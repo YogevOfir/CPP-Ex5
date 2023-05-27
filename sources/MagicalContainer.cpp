@@ -101,8 +101,12 @@ MagicalContainer::AscendingIterator& MagicalContainer::AscendingIterator::operat
     return *this;
 }
 
-int& MagicalContainer::AscendingIterator::operator*()
+int MagicalContainer::AscendingIterator::operator*()
 {
+    if(iter == container.sortedElem.end())
+    {
+        throw std::out_of_range("Out of range");
+    }
     return *iter;
 }
 
@@ -163,7 +167,7 @@ MagicalContainer::AscendingIterator& MagicalContainer::AscendingIterator::end()
 
 // Constructors
 
-MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer& container) : container(container), iter(container.sortedElem.begin()), pos(0) {}
+MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer& container) : container(container), iter(container.crossElem.begin()), pos(0) {}
 
 MagicalContainer::SideCrossIterator::SideCrossIterator(const SideCrossIterator& other) : container(other.container), iter(other.iter), pos(other.pos) {}
 
@@ -192,6 +196,10 @@ MagicalContainer::SideCrossIterator& MagicalContainer::SideCrossIterator::operat
 
 int& MagicalContainer::SideCrossIterator::operator*()
 {
+    if(iter == container.crossElem.end())
+    {
+        throw std::out_of_range("Out of range");
+    }
     return *iter;
 }
 
@@ -252,7 +260,7 @@ MagicalContainer::SideCrossIterator& MagicalContainer::SideCrossIterator::end()
 
 // Constructors
 
-MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer& container) : container(container), iter(container.sortedElem.begin()), pos(0) {}
+MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer& container) : container(container), iter(container.primeElem.begin()), pos(0) {}
 
 MagicalContainer::PrimeIterator::PrimeIterator(const PrimeIterator& other) : container(other.container), iter(other.iter), pos(other.pos) {}
 
@@ -280,7 +288,11 @@ MagicalContainer::PrimeIterator& MagicalContainer::PrimeIterator::operator++()
 }
 
 int& MagicalContainer::PrimeIterator::operator*()
-{
+{   
+    if(iter == container.primeElem.end())
+    {
+        throw std::out_of_range("Out of range");
+    }
     return *iter;
 }
 
