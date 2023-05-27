@@ -4,62 +4,128 @@
 using namespace std;
 
 
-// void MagicalContainer::fix()
-// {
-//     MagicalContainer::sortedElem = originalElem;
-//     MagicalContainer::sortedElem.sort();
+void MagicalContainer::fixCross(MagicalContainer* container)
+{
+    int i = 0;
+    int j = container->size() - 1;
 
-//     MagicalContainer::primeElem.clear();
-//     for (int elem : originalElem)
-//     {
-//         if (isPrime(elem))
-//         {
-//             MagicalContainer::primeElem.push_back(elem);
-//         }
-//     }
-// }
+    while (i < j)
+    {
+        
+        i++;
+        j--;
+    }
+}
 
-// bool isPrime(int elem)
-// {
-//     if (elem == 1)
-//     {
-//         return false;
-//     }
-//     else if (elem == 2)
-//     {
-//         return true;
-//     }
-//     else
-//     {
-//         for (int i = 2; i < sqrt(elem) + 1; i++)
-//         {
-//             if (elem % i == 0)
-//             {
-//                 return false;
-//             }
-//         }
-//         return true;
-//     }
-// }
+bool isPrime(int elem)
+{
+    if (elem == 1)
+    {
+        return false;
+    }
+    else if (elem == 2)
+    {
+        return true;
+    }
+    else
+    {
+        for (int i = 2; i < sqrt(elem) + 1; i++)
+        {
+            if (elem % i == 0)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+}
 
 // ***************** MagicalContainer *****************
 // ***************** MagicalContainer *****************
 // ***************** MagicalContainer *****************
 
 void MagicalContainer::addElement(int elem)
-{
-    // originalElem.push_back(elem);
-    // MagicalContainer::fix();
+{   
+    // add to originalElem
+    originalElem.push_back(elem);
+
+    // add to sortedElem
+    sortedElem.insert(elem);
+
+    // add to primeElem
+    if (isPrime(elem))
+    {
+        primeElem.push_back(elem);
+    }
+
+    // add to CrossElem
+    crossElem.clear();
+    auto start = originalElem.begin();
+    auto end = --originalElem.end();
+
+    while (start != end) {
+        crossElem.push_back(*start);
+        crossElem.push_back(*end);
+        ++start;
+        --end;
+    }
+
+    // Handle the case when start == end (for odd-sized list)
+    if (start == end) {
+        crossElem.push_back(*start);
+    }
+
 }
 
 void MagicalContainer::removeElement(int elem)
 {
+    // check if elem is in originalElem
+    bool found = false;
+    for (auto it = originalElem.begin(); it != originalElem.end(); ++it)
+    {
+        if (*it == elem)
+        {
+            found = true;
+            break;
+        }
+    }
+    if (!found)
+    {
+        throw std::runtime_error("Invalid argument");
+    }
+
+    // remove from originalElem
+    originalElem.remove(elem);
+
+    // remove from sortedElem
+    auto range = sortedElem.equal_range(elem); // Find the range of elements with value 2
+    sortedElem.erase(range.first, range.second); // Remove all elements within the range
+
+    // remove from primeElem
+    primeElem.remove(elem);
+
+    // remove from CrossElem
+    crossElem.clear();
+    auto start = originalElem.begin();
+    auto end = --originalElem.end();
+
+    while (start != end) {
+        crossElem.push_back(*start);
+        crossElem.push_back(*end);
+        ++start;
+        --end;
+    }
+
+    // Handle the case when start == end (for odd-sized list)
+    if (start == end) {
+        crossElem.push_back(*start);
+    }
 
 }
 
 int MagicalContainer::size()
 {
-    return 0;
+    return originalElem.size();
 }
 
 

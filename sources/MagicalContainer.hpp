@@ -20,7 +20,7 @@ class MagicalContainer
         void addElement(int elem);
         void removeElement(int elem);
         int size();
-        // void fix();
+        static void fixCross(MagicalContainer* container);
 
 
     // MagicalContainer() = default;  // Default constructor
