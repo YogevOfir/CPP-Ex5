@@ -3,415 +3,415 @@
 
 using namespace std;
 
+namespace ariel{
+    void MagicalContainer::fixCross(MagicalContainer* container)
+    {
+        int i = 0;
+        int j = container->size() - 1;
 
-void MagicalContainer::fixCross(MagicalContainer* container)
-{
-    int i = 0;
-    int j = container->size() - 1;
-
-    while (i < j)
-    {
-        
-        i++;
-        j--;
-    }
-}
-
-bool isPrime(int elem)
-{
-    if (elem == 1)
-    {
-        return false;
-    }
-    else if (elem == 2)
-    {
-        return true;
-    }
-    else
-    {
-        for (int i = 2; i < sqrt(elem) + 1; i++)
+        while (i < j)
         {
-            if (elem % i == 0)
+            
+            i++;
+            j--;
+        }
+    }
+
+    bool isPrime(int elem)
+    {
+        if (elem == 1)
+        {
+            return false;
+        }
+        else if (elem == 2)
+        {
+            return true;
+        }
+        else
+        {
+            for (int i = 2; i < sqrt(elem) + 1; i++)
             {
-                return false;
+                if (elem % i == 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    // ***************** MagicalContainer *****************
+    // ***************** MagicalContainer *****************
+    // ***************** MagicalContainer *****************
+
+    void MagicalContainer::addElement(int elem)
+    {   
+        // add to originalElem
+        originalElem.push_back(elem);
+
+        // add to sortedElem
+        sortedElem.insert(elem);
+
+        // add to primeElem
+        if (isPrime(elem))
+        {
+            primeElem.push_back(elem);
+        }
+
+        // add to CrossElem
+        crossElem.clear();
+        auto start = originalElem.begin();
+        auto end = --originalElem.end();
+
+        while (start != end) {
+            crossElem.push_back(*start);
+            crossElem.push_back(*end);
+            ++start;
+            --end;
+        }
+
+        // Handle the case when start == end (for odd-sized list)
+        if (start == end) {
+            crossElem.push_back(*start);
+        }
+
+    }
+
+    void MagicalContainer::removeElement(int elem)
+    {
+        // check if elem is in originalElem
+        bool found = false;
+        for (auto it = originalElem.begin(); it != originalElem.end(); ++it)
+        {
+            if (*it == elem)
+            {
+                found = true;
+                break;
             }
         }
-        return true;
-    }
-}
-
-// ***************** MagicalContainer *****************
-// ***************** MagicalContainer *****************
-// ***************** MagicalContainer *****************
-
-void MagicalContainer::addElement(int elem)
-{   
-    // add to originalElem
-    originalElem.push_back(elem);
-
-    // add to sortedElem
-    sortedElem.insert(elem);
-
-    // add to primeElem
-    if (isPrime(elem))
-    {
-        primeElem.push_back(elem);
-    }
-
-    // add to CrossElem
-    crossElem.clear();
-    auto start = originalElem.begin();
-    auto end = --originalElem.end();
-
-    while (start != end) {
-        crossElem.push_back(*start);
-        crossElem.push_back(*end);
-        ++start;
-        --end;
-    }
-
-    // Handle the case when start == end (for odd-sized list)
-    if (start == end) {
-        crossElem.push_back(*start);
-    }
-
-}
-
-void MagicalContainer::removeElement(int elem)
-{
-    // check if elem is in originalElem
-    bool found = false;
-    for (auto it = originalElem.begin(); it != originalElem.end(); ++it)
-    {
-        if (*it == elem)
+        if (!found)
         {
-            found = true;
-            break;
+            throw std::runtime_error("Invalid argument");
         }
+
+        // remove from originalElem
+        originalElem.remove(elem);
+
+        // remove from sortedElem
+        auto range = sortedElem.equal_range(elem); // Find the range of elements with value 2
+        sortedElem.erase(range.first, range.second); // Remove all elements within the range
+
+        // remove from primeElem
+        primeElem.remove(elem);
+
+        // remove from CrossElem
+        crossElem.clear();
+        auto start = originalElem.begin();
+        auto end = --originalElem.end();
+
+        while (start != end) {
+            crossElem.push_back(*start);
+            crossElem.push_back(*end);
+            ++start;
+            --end;
+        }
+
+        // Handle the case when start == end (for odd-sized list)
+        if (start == end) {
+            crossElem.push_back(*start);
+        }
+
     }
-    if (!found)
+
+    int MagicalContainer::size()
     {
-        throw std::runtime_error("Invalid argument");
+        return originalElem.size();
     }
 
-    // remove from originalElem
-    originalElem.remove(elem);
-
-    // remove from sortedElem
-    auto range = sortedElem.equal_range(elem); // Find the range of elements with value 2
-    sortedElem.erase(range.first, range.second); // Remove all elements within the range
-
-    // remove from primeElem
-    primeElem.remove(elem);
-
-    // remove from CrossElem
-    crossElem.clear();
-    auto start = originalElem.begin();
-    auto end = --originalElem.end();
-
-    while (start != end) {
-        crossElem.push_back(*start);
-        crossElem.push_back(*end);
-        ++start;
-        --end;
-    }
-
-    // Handle the case when start == end (for odd-sized list)
-    if (start == end) {
-        crossElem.push_back(*start);
-    }
-
-}
-
-int MagicalContainer::size()
-{
-    return originalElem.size();
-}
 
 
 
 
+    // ***************** AscendingIterator *****************
+    // ***************** AscendingIterator *****************
+    // ***************** AscendingIterator *****************
 
-// ***************** AscendingIterator *****************
-// ***************** AscendingIterator *****************
-// ***************** AscendingIterator *****************
 
+    // Constructors
 
-// Constructors
+    MagicalContainer::AscendingIterator::AscendingIterator(MagicalContainer& container) : container(container), iter(container.sortedElem.begin()), pos(0) {}
 
-MagicalContainer::AscendingIterator::AscendingIterator(MagicalContainer& container) : container(container), iter(container.sortedElem.begin()), pos(0) {}
+    MagicalContainer::AscendingIterator::AscendingIterator(const AscendingIterator& other) : container(other.container), iter(other.iter), pos(other.pos) {}
 
-MagicalContainer::AscendingIterator::AscendingIterator(const AscendingIterator& other) : container(other.container), iter(other.iter), pos(other.pos) {}
-
-MagicalContainer::AscendingIterator& MagicalContainer::AscendingIterator::operator=(const AscendingIterator& other)
-{
-    if(&container != &other.container) // if they are not the same container
+    MagicalContainer::AscendingIterator& MagicalContainer::AscendingIterator::operator=(const AscendingIterator& other)
     {
-        throw std::invalid_argument("Invalid argument");
+        if(&container != &other.container) // if they are not the same container
+        {
+            throw std::invalid_argument("Invalid argument");
+        }
+        iter = other.iter;
+        pos = other.pos;
+        return *this;
     }
-    iter = other.iter;
-    pos = other.pos;
-    return *this;
-}
 
-// Operators
+    // Operators
 
-MagicalContainer::AscendingIterator& MagicalContainer::AscendingIterator::operator++()
-{
-    if(iter == container.sortedElem.end())
+    MagicalContainer::AscendingIterator& MagicalContainer::AscendingIterator::operator++()
     {
-        throw std::out_of_range("Out of range");
+        if(iter == container.sortedElem.end())
+        {
+            throw std::out_of_range("Out of range");
+        }
+        ++iter;
+        ++pos;
+        return *this;
     }
-    ++iter;
-    ++pos;
-    return *this;
-}
 
-int MagicalContainer::AscendingIterator::operator*()
-{
-    if(iter == container.sortedElem.end())
+    int MagicalContainer::AscendingIterator::operator*()
     {
-        throw std::out_of_range("Out of range");
+        if(iter == container.sortedElem.end())
+        {
+            throw std::out_of_range("Out of range");
+        }
+        return *iter;
     }
-    return *iter;
-}
 
-// Comparison operators
+    // Comparison operators
 
-bool MagicalContainer::AscendingIterator::operator==(const AscendingIterator& other) const
-{
-    if(&container != &other.container) // if they are not the same container
+    bool MagicalContainer::AscendingIterator::operator==(const AscendingIterator& other) const
     {
-        throw std::invalid_argument("Invalid argument");
+        if(&container != &other.container) // if they are not the same container
+        {
+            throw std::invalid_argument("Invalid argument");
+        }
+        return pos == other.pos;
     }
-    return pos == other.pos;
-}
 
-bool MagicalContainer::AscendingIterator::operator!=(const AscendingIterator& other) const
-{
-    return !(*this == other);
-}
-
-bool MagicalContainer::AscendingIterator::operator<(const AscendingIterator& other) const
-{
-    if(&container != &other.container) // if they are not the same container
+    bool MagicalContainer::AscendingIterator::operator!=(const AscendingIterator& other) const
     {
-        throw std::invalid_argument("Invalid argument");
+        return !(*this == other);
     }
-    return pos < other.pos;
-}
 
-bool MagicalContainer::AscendingIterator::operator>(const AscendingIterator& other) const
-{
-    if(&container != &other.container) // if they are not the same container
+    bool MagicalContainer::AscendingIterator::operator<(const AscendingIterator& other) const
     {
-        throw std::invalid_argument("Invalid argument");
+        if(&container != &other.container) // if they are not the same container
+        {
+            throw std::invalid_argument("Invalid argument");
+        }
+        return pos < other.pos;
     }
-    return pos > other.pos;
-}
 
-// Getters
-
-MagicalContainer::AscendingIterator& MagicalContainer::AscendingIterator::begin()
-{
-    iter = container.sortedElem.begin(); // iterates to the beginning of the container
-    pos = 0;                             // sets the position to 0
-    return *this;
-}
-
-MagicalContainer::AscendingIterator& MagicalContainer::AscendingIterator::end()
-{
-    iter = container.sortedElem.end(); // iterates to the end of the container
-    pos = container.sortedElem.size(); // sets the position to the size of the container
-    return *this;
-}
-
-
-// ***************** SideCrossIterator *****************
-// ***************** SideCrossIterator *****************
-// ***************** SideCrossIterator *****************
-
-// Constructors
-
-MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer& container) : container(container), iter(container.crossElem.begin()), pos(0) {}
-
-MagicalContainer::SideCrossIterator::SideCrossIterator(const SideCrossIterator& other) : container(other.container), iter(other.iter), pos(other.pos) {}
-
-MagicalContainer::SideCrossIterator& MagicalContainer::SideCrossIterator::operator=(const SideCrossIterator& other)
-{
-    if(&container != &other.container) // if they are not the same container
+    bool MagicalContainer::AscendingIterator::operator>(const AscendingIterator& other) const
     {
-        throw std::invalid_argument("Invalid argument");
+        if(&container != &other.container) // if they are not the same container
+        {
+            throw std::invalid_argument("Invalid argument");
+        }
+        return pos > other.pos;
     }
-    iter = other.iter;
-    pos = other.pos;
-    return *this;
-}
-// Operators
 
-MagicalContainer::SideCrossIterator& MagicalContainer::SideCrossIterator::operator++()
-{
-    if(iter == container.crossElem.end())
+    // Getters
+
+    MagicalContainer::AscendingIterator& MagicalContainer::AscendingIterator::begin()
     {
-        throw std::out_of_range("Out of range");
+        iter = container.sortedElem.begin(); // iterates to the beginning of the container
+        pos = 0;                             // sets the position to 0
+        return *this;
     }
-    ++iter;
-    ++pos;
-    return *this;
-}
 
-int& MagicalContainer::SideCrossIterator::operator*()
-{
-    if(iter == container.crossElem.end())
+    MagicalContainer::AscendingIterator& MagicalContainer::AscendingIterator::end()
     {
-        throw std::out_of_range("Out of range");
+        iter = container.sortedElem.end(); // iterates to the end of the container
+        pos = container.sortedElem.size(); // sets the position to the size of the container
+        return *this;
     }
-    return *iter;
-}
 
-// Comparison operators
 
-bool MagicalContainer::SideCrossIterator::operator==(const SideCrossIterator& other) const
-{
-    if(&container != &other.container) // if they are not the same container
+    // ***************** SideCrossIterator *****************
+    // ***************** SideCrossIterator *****************
+    // ***************** SideCrossIterator *****************
+
+    // Constructors
+
+    MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer& container) : container(container), iter(container.crossElem.begin()), pos(0) {}
+
+    MagicalContainer::SideCrossIterator::SideCrossIterator(const SideCrossIterator& other) : container(other.container), iter(other.iter), pos(other.pos) {}
+
+    MagicalContainer::SideCrossIterator& MagicalContainer::SideCrossIterator::operator=(const SideCrossIterator& other)
     {
-        throw std::invalid_argument("Invalid argument");
+        if(&container != &other.container) // if they are not the same container
+        {
+            throw std::invalid_argument("Invalid argument");
+        }
+        iter = other.iter;
+        pos = other.pos;
+        return *this;
     }
-    return pos == other.pos;
-}
+    // Operators
 
-bool MagicalContainer::SideCrossIterator::operator!=(const SideCrossIterator& other) const
-{
-    return !(*this == other);
-}
-
-bool MagicalContainer::SideCrossIterator::operator<(const SideCrossIterator& other) const
-{
-    if(&container != &other.container) // if they are not the same container
+    MagicalContainer::SideCrossIterator& MagicalContainer::SideCrossIterator::operator++()
     {
-        throw std::invalid_argument("Invalid argument");
+        if(iter == container.crossElem.end())
+        {
+            throw std::out_of_range("Out of range");
+        }
+        ++iter;
+        ++pos;
+        return *this;
     }
-    return pos < other.pos;
-}
 
-bool MagicalContainer::SideCrossIterator::operator>(const SideCrossIterator& other) const
-{
-    if(&container != &other.container) // if they are not the same container
+    int& MagicalContainer::SideCrossIterator::operator*()
     {
-        throw std::invalid_argument("Invalid argument");
+        if(iter == container.crossElem.end())
+        {
+            throw std::out_of_range("Out of range");
+        }
+        return *iter;
     }
-    return pos > other.pos;
-}
 
-// Getters
+    // Comparison operators
 
-MagicalContainer::SideCrossIterator& MagicalContainer::SideCrossIterator::begin()
-{
-    iter = container.crossElem.begin(); // iterates to the beginning of the container
-    pos = 0;                             // sets the position to 0
-    return *this;
-}
-
-MagicalContainer::SideCrossIterator& MagicalContainer::SideCrossIterator::end()
-{
-    iter = container.crossElem.end(); // iterates to the end of the container
-    pos = container.crossElem.size(); // sets the position to the size of the container
-    return *this;
-}
-
-
-// ***************** PrimeIterator *****************
-// ***************** PrimeIterator *****************
-// ***************** PrimeIterator *****************
-
-// Constructors
-
-MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer& container) : container(container), iter(container.primeElem.begin()), pos(0) {}
-
-MagicalContainer::PrimeIterator::PrimeIterator(const PrimeIterator& other) : container(other.container), iter(other.iter), pos(other.pos) {}
-
-MagicalContainer::PrimeIterator& MagicalContainer::PrimeIterator::operator=(const PrimeIterator& other)
-{
-    if(&container != &other.container) // if they are not the same container
+    bool MagicalContainer::SideCrossIterator::operator==(const SideCrossIterator& other) const
     {
-        throw std::invalid_argument("Invalid argument");
+        if(&container != &other.container) // if they are not the same container
+        {
+            throw std::invalid_argument("Invalid argument");
+        }
+        return pos == other.pos;
     }
-    iter = other.iter;
-    pos = other.pos;
-    return *this;
-}
-// Operators
 
-MagicalContainer::PrimeIterator& MagicalContainer::PrimeIterator::operator++()
-{
-    if(iter == container.primeElem.end())
+    bool MagicalContainer::SideCrossIterator::operator!=(const SideCrossIterator& other) const
     {
-        throw std::out_of_range("Out of range");
+        return !(*this == other);
     }
-    ++iter;
-    ++pos;
-    return *this;
-}
 
-int& MagicalContainer::PrimeIterator::operator*()
-{   
-    if(iter == container.primeElem.end())
+    bool MagicalContainer::SideCrossIterator::operator<(const SideCrossIterator& other) const
     {
-        throw std::out_of_range("Out of range");
+        if(&container != &other.container) // if they are not the same container
+        {
+            throw std::invalid_argument("Invalid argument");
+        }
+        return pos < other.pos;
     }
-    return *iter;
-}
 
-// Comparison operators
-
-bool MagicalContainer::PrimeIterator::operator==(const PrimeIterator& other) const
-{
-    if(&container != &other.container) // if they are not the same container
+    bool MagicalContainer::SideCrossIterator::operator>(const SideCrossIterator& other) const
     {
-        throw std::invalid_argument("Invalid argument");
+        if(&container != &other.container) // if they are not the same container
+        {
+            throw std::invalid_argument("Invalid argument");
+        }
+        return pos > other.pos;
     }
-    return pos == other.pos;
-}
 
-bool MagicalContainer::PrimeIterator::operator!=(const PrimeIterator& other) const
-{
-    return !(*this == other);
-}
+    // Getters
 
-bool MagicalContainer::PrimeIterator::operator<(const PrimeIterator& other) const
-{
-    if(&container != &other.container) // if they are not the same container
+    MagicalContainer::SideCrossIterator& MagicalContainer::SideCrossIterator::begin()
     {
-        throw std::invalid_argument("Invalid argument");
+        iter = container.crossElem.begin(); // iterates to the beginning of the container
+        pos = 0;                             // sets the position to 0
+        return *this;
     }
-    return pos < other.pos;
-}
 
-bool MagicalContainer::PrimeIterator::operator>(const PrimeIterator& other) const
-{
-    if(&container != &other.container) // if they are not the same container
+    MagicalContainer::SideCrossIterator& MagicalContainer::SideCrossIterator::end()
     {
-        throw std::invalid_argument("Invalid argument");
+        iter = container.crossElem.end(); // iterates to the end of the container
+        pos = container.crossElem.size(); // sets the position to the size of the container
+        return *this;
     }
-    return pos > other.pos;
+
+
+    // ***************** PrimeIterator *****************
+    // ***************** PrimeIterator *****************
+    // ***************** PrimeIterator *****************
+
+    // Constructors
+
+    MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer& container) : container(container), iter(container.primeElem.begin()), pos(0) {}
+
+    MagicalContainer::PrimeIterator::PrimeIterator(const PrimeIterator& other) : container(other.container), iter(other.iter), pos(other.pos) {}
+
+    MagicalContainer::PrimeIterator& MagicalContainer::PrimeIterator::operator=(const PrimeIterator& other)
+    {
+        if(&container != &other.container) // if they are not the same container
+        {
+            throw std::invalid_argument("Invalid argument");
+        }
+        iter = other.iter;
+        pos = other.pos;
+        return *this;
+    }
+    // Operators
+
+    MagicalContainer::PrimeIterator& MagicalContainer::PrimeIterator::operator++()
+    {
+        if(iter == container.primeElem.end())
+        {
+            throw std::out_of_range("Out of range");
+        }
+        ++iter;
+        ++pos;
+        return *this;
+    }
+
+    int& MagicalContainer::PrimeIterator::operator*()
+    {   
+        if(iter == container.primeElem.end())
+        {
+            throw std::out_of_range("Out of range");
+        }
+        return *iter;
+    }
+
+    // Comparison operators
+
+    bool MagicalContainer::PrimeIterator::operator==(const PrimeIterator& other) const
+    {
+        if(&container != &other.container) // if they are not the same container
+        {
+            throw std::invalid_argument("Invalid argument");
+        }
+        return pos == other.pos;
+    }
+
+    bool MagicalContainer::PrimeIterator::operator!=(const PrimeIterator& other) const
+    {
+        return !(*this == other);
+    }
+
+    bool MagicalContainer::PrimeIterator::operator<(const PrimeIterator& other) const
+    {
+        if(&container != &other.container) // if they are not the same container
+        {
+            throw std::invalid_argument("Invalid argument");
+        }
+        return pos < other.pos;
+    }
+
+    bool MagicalContainer::PrimeIterator::operator>(const PrimeIterator& other) const
+    {
+        if(&container != &other.container) // if they are not the same container
+        {
+            throw std::invalid_argument("Invalid argument");
+        }
+        return pos > other.pos;
+    }
+
+    // Getters
+
+    MagicalContainer::PrimeIterator& MagicalContainer::PrimeIterator::begin()
+    {
+        iter = container.primeElem.begin(); // iterates to the beginning of the container
+        pos = 0;                             // sets the position to 0
+        return *this;
+    }
+
+    MagicalContainer::PrimeIterator& MagicalContainer::PrimeIterator::end()
+    {
+        iter = container.primeElem.end(); // iterates to the end of the container
+        pos = container.primeElem.size(); // sets the position to the size of the container
+        return *this;
+    }
+
 }
-
-// Getters
-
-MagicalContainer::PrimeIterator& MagicalContainer::PrimeIterator::begin()
-{
-    iter = container.primeElem.begin(); // iterates to the beginning of the container
-    pos = 0;                             // sets the position to 0
-    return *this;
-}
-
-MagicalContainer::PrimeIterator& MagicalContainer::PrimeIterator::end()
-{
-    iter = container.primeElem.end(); // iterates to the end of the container
-    pos = container.primeElem.size(); // sets the position to the size of the container
-    return *this;
-}
-
-
 
 

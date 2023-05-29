@@ -2,6 +2,8 @@
 #include "MagicalContainer.hpp"
 #include <stdexcept>
 
+using namespace ariel;
+
 TEST_CASE("MagicContainer functions")
 {
     MagicalContainer container;
