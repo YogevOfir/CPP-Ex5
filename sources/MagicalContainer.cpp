@@ -147,7 +147,7 @@ namespace ariel{
     {
         if(&container != &other.container) // if they are not the same container
         {
-            throw std::invalid_argument("Invalid argument");
+            throw std::runtime_error("Invalid argument");
         }
         iter = other.iter;
         pos = other.pos;
@@ -160,7 +160,7 @@ namespace ariel{
     {
         if(iter == container.sortedElem.end())
         {
-            throw std::out_of_range("Out of range");
+            throw std::runtime_error("Out of range");
         }
         ++iter;
         ++pos;
@@ -241,7 +241,7 @@ namespace ariel{
     {
         if(&container != &other.container) // if they are not the same container
         {
-            throw std::invalid_argument("Invalid argument");
+            throw std::runtime_error("Invalid argument");
         }
         iter = other.iter;
         pos = other.pos;
@@ -253,7 +253,7 @@ namespace ariel{
     {
         if(iter == container.crossElem.end())
         {
-            throw std::out_of_range("Out of range");
+            throw std::runtime_error("Out of range");
         }
         ++iter;
         ++pos;
@@ -334,7 +334,7 @@ namespace ariel{
     {
         if(&container != &other.container) // if they are not the same container
         {
-            throw std::invalid_argument("Invalid argument");
+            throw std::runtime_error("Invalid argument");
         }
         iter = other.iter;
         pos = other.pos;
@@ -346,7 +346,7 @@ namespace ariel{
     {
         if(iter == container.primeElem.end())
         {
-            throw std::out_of_range("Out of range");
+            throw std::runtime_error("Out of range");
         }
         ++iter;
         ++pos;
