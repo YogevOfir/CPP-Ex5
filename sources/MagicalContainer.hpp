@@ -24,15 +24,6 @@ namespace ariel
             int size();
             static void fixCross(MagicalContainer* container);
 
-
-        // MagicalContainer() = default;  // Default constructor
-        // MagicalContainer(const MagicalContainer&) = default;  // Copy constructor
-        // MagicalContainer& operator=(const MagicalContainer&) = default;  // Copy assignment operator
-        // MagicalContainer(MagicalContainer&&) = default;  // Move constructor
-        // MagicalContainer& operator=(MagicalContainer&&) = default;  // Move assignment operator
-        // ~MagicalContainer() = default;  // Destructor
-
-
         class AscendingIterator
         {
             private:
@@ -54,8 +45,6 @@ namespace ariel
                 AscendingIterator& operator++(); 
                 int operator*(); // dereference operator
                 
-                size_t getPos() const {return pos;}
-
                 // Comparison operators
                 bool operator==(const AscendingIterator& other) const;
                 bool operator!=(const AscendingIterator& other) const;
@@ -86,8 +75,6 @@ namespace ariel
                 // Operators
                 SideCrossIterator& operator++(); 
                 int& operator*(); // dereference operator
-
-                size_t getPos() const {return pos;}
 
                 // Comparison operators
                 bool operator==(const SideCrossIterator& other) const;
@@ -120,8 +107,6 @@ namespace ariel
                 // Operators
                 PrimeIterator& operator++(); 
                 int& operator*(); // dereference operator
-
-                size_t getPos() const {return pos;}
 
                 // Comparison operators
                 bool operator==(const PrimeIterator& other) const;

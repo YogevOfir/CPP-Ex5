@@ -4,18 +4,6 @@
 using namespace std;
 
 namespace ariel{
-    void MagicalContainer::fixCross(MagicalContainer* container)
-    {
-        int i = 0;
-        int j = container->size() - 1;
-
-        while (i < j)
-        {
-            
-            i++;
-            j--;
-        }
-    }
 
     bool isPrime(int elem)
     {
