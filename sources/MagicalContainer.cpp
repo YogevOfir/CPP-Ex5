@@ -1,5 +1,6 @@
 #include "MagicalContainer.hpp"
 #include <math.h>
+#include <algorithm>
 
 using namespace std;
 
@@ -28,6 +29,63 @@ namespace ariel{
         }
     }
 
+    void MagicalContainer::sortOriginalElem()
+    {
+        for(unsigned long i = 0; i < originalElem.size(); i++)
+        {
+            for(unsigned long j = 0; j < originalElem.size() - i - 1; j++)
+            {
+                if(originalElem[j] > originalElem[j + 1])
+                {
+                    int temp = originalElem[j];
+                    originalElem[j] = originalElem[j + 1];
+                    originalElem[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    void MagicalContainer::fixSorted()
+    {
+        sortedElem.clear();
+        for (auto it = originalElem.begin(); it != originalElem.end(); ++it)
+        {
+            sortedElem.push_back(&(*it));
+        }
+    }
+
+    void MagicalContainer::fixPrime()
+    {
+        primeElem.clear();
+        for (auto it = originalElem.begin(); it != originalElem.end(); ++it)
+        {
+            if (isPrime(*it))
+            {
+                primeElem.push_back(&(*it));
+            }
+        }
+    }
+
+    void MagicalContainer::fixCross()
+    {
+        crossElem.clear();
+        auto start = originalElem.begin();
+        auto end = --originalElem.end();
+
+        while(start < end)
+        {
+            crossElem.push_back(&(*start));
+            crossElem.push_back(&(*end));
+            start++;
+            end--;
+        }
+        if (start == end)
+        {
+            crossElem.push_back(&(*start));
+        }
+
+    }
+
     // ***************** MagicalContainer *****************
     // ***************** MagicalContainer *****************
     // ***************** MagicalContainer *****************
@@ -36,33 +94,16 @@ namespace ariel{
     {   
         // add to originalElem
         originalElem.push_back(elem);
+        sortOriginalElem();
 
         // add to sortedElem
-        sortedElem.insert(elem);
+        fixSorted();
 
         // add to primeElem
-        if (isPrime(elem))
-        {
-            primeElem.push_back(elem);
-        }
+        fixPrime();
 
         // add to CrossElem
-        crossElem.clear();
-        auto start = originalElem.begin();
-        auto end = --originalElem.end();
-
-        while (start != end) {
-            crossElem.push_back(*start);
-            crossElem.push_back(*end);
-            ++start;
-            --end;
-        }
-
-        // Handle the case when start == end (for odd-sized list)
-        if (start == end) {
-            crossElem.push_back(*start);
-        }
-
+        fixCross();
     }
 
     void MagicalContainer::removeElement(int elem)
@@ -83,31 +124,16 @@ namespace ariel{
         }
 
         // remove from originalElem
-        originalElem.remove(elem);
+        originalElem.erase(std::remove(originalElem.begin(), originalElem.end(), elem), originalElem.end());
 
         // remove from sortedElem
-        auto range = sortedElem.equal_range(elem); // Find the range of elements with value 2
-        sortedElem.erase(range.first, range.second); // Remove all elements within the range
+        fixSorted();
 
         // remove from primeElem
-        primeElem.remove(elem);
+        fixPrime();
 
         // remove from CrossElem
-        crossElem.clear();
-        auto start = originalElem.begin();
-        auto end = --originalElem.end();
-
-        while (start != end) {
-            crossElem.push_back(*start);
-            crossElem.push_back(*end);
-            ++start;
-            --end;
-        }
-
-        // Handle the case when start == end (for odd-sized list)
-        if (start == end) {
-            crossElem.push_back(*start);
-        }
+        fixCross();
 
     }
 
@@ -161,7 +187,7 @@ namespace ariel{
         {
             throw std::out_of_range("Out of range");
         }
-        return *iter;
+        return **iter;
     }
 
     // Comparison operators
@@ -254,7 +280,7 @@ namespace ariel{
         {
             throw std::out_of_range("Out of range");
         }
-        return *iter;
+        return **iter;
     }
 
     // Comparison operators
@@ -347,7 +373,7 @@ namespace ariel{
         {
             throw std::out_of_range("Out of range");
         }
-        return *iter;
+        return **iter;
     }
 
     // Comparison operators

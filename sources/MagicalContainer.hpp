@@ -2,6 +2,7 @@
 #define MAGICAL_CONTAINER_HPP
 
 #include <iterator>
+#include <vector>
 #include <list>
 #include <set>
 
@@ -13,22 +14,25 @@ namespace ariel
     {
 
         private:
-            list<int> originalElem;
-            multiset<int> sortedElem;
-            list<int> crossElem;
-            list<int> primeElem;
+            vector<int> originalElem;
+            vector<int*> sortedElem;
+            vector<int*> crossElem;
+            vector<int*> primeElem;
 
         public:
             void addElement(int elem);
             void removeElement(int elem);
             int size();
-            static void fixCross(MagicalContainer* container);
+            void fixCross();
+            void fixPrime();
+            void fixSorted();
+            void sortOriginalElem();
 
         class AscendingIterator
         {
             private:
                 MagicalContainer& container;
-                multiset<int>::iterator iter;
+                vector<int*>::iterator iter;
                 size_t pos;
 
             public:
@@ -60,7 +64,7 @@ namespace ariel
         {
             private:
                 MagicalContainer& container;
-                list<int>::iterator iter;
+                vector<int*>::iterator iter;
                 size_t pos;
 
             public:
@@ -92,7 +96,7 @@ namespace ariel
         {
             private:
                 MagicalContainer& container;
-                list<int>::iterator iter;
+                vector<int*>::iterator iter;
                 size_t pos;
 
             public:
