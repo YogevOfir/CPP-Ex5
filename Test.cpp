@@ -143,9 +143,9 @@ TEST_CASE("SideCrossIterator")
     container2.addElement(2);
     container2.addElement(17);
 
-    CHECK(*scIter.begin() == 19);
-    CHECK(*scIter2.begin() == 9);
-    CHECK(*scIter3.begin() == 9); // same as scIter2 - copy constructor
+    CHECK(*scIter.begin() == 4);
+    CHECK(*scIter2.begin() == 2);
+    CHECK(*scIter3.begin() == 2); // same as scIter2 - copy constructor
 
 
     // Operators check
@@ -160,7 +160,7 @@ TEST_CASE("SideCrossIterator")
     // CHECK same containers
     CHECK(scIter2 == scIter3); // same position
     ++scIter3;
-    CHECK(*scIter3 == 17); 
+    CHECK(*scIter3 == 25); 
     CHECK(scIter2 != scIter3); // different position
     CHECK(scIter2 < scIter3); // different position
     CHECK(scIter3 > scIter2); // different position
@@ -180,11 +180,11 @@ TEST_CASE("SideCrossIterator")
     // Check Order of elements
     // container: 19 4 7 10 35
 
-    CHECK(*scIter.begin() == 19);
-    CHECK(*(++scIter) == 4);
-    CHECK(*(++scIter) == 7);
-    CHECK(*(++scIter) == 10);
+    CHECK(*scIter.begin() == 4);
     CHECK(*(++scIter) == 35);
+    CHECK(*(++scIter) == 7);
+    CHECK(*(++scIter) == 19);
+    CHECK(*(++scIter) == 10);
     CHECK(++scIter == scIter.end());
     CHECK_THROWS_AS(*scIter, std::out_of_range); // prIter is at the end
 
@@ -192,12 +192,12 @@ TEST_CASE("SideCrossIterator")
 
     // container: 19 13 7 4 35 10
 
-    CHECK(*scIter.begin() == 19);
-    CHECK(*(++scIter) == 13);
-    CHECK(*(++scIter) == 7);
-    CHECK(*(++scIter) == 4);
+    CHECK(*scIter.begin() == 4);
     CHECK(*(++scIter) == 35);
+    CHECK(*(++scIter) == 7);
+    CHECK(*(++scIter) == 19);
     CHECK(*(++scIter) == 10);
+    CHECK(*(++scIter) == 13);
     CHECK(++scIter == scIter.end());
     
 
@@ -206,9 +206,9 @@ TEST_CASE("SideCrossIterator")
 
     // container: 9 25 3
 
-    CHECK(*scIter2.begin() == 9);
+    CHECK(*scIter2.begin() == 3);
     CHECK(*(++scIter2) == 25);
-    CHECK(*(++scIter2) == 3);
+    CHECK(*(++scIter2) == 9);
     CHECK(++scIter2 == scIter2.end());
 
 }
@@ -241,9 +241,9 @@ TEST_CASE("PrimeIterator")
     container2.addElement(2);
     container2.addElement(17);
 
-    CHECK(*prIter.begin() == 19);
-    CHECK(*prIter2.begin() == 3);
-    CHECK(*prIter3.begin() == 3); // same as prIter2 - copy constructor
+    CHECK(*prIter.begin() == 7);
+    CHECK(*prIter2.begin() == 2);
+    CHECK(*prIter3.begin() == 2); // same as prIter2 - copy constructor
 
 
     // Operators check
@@ -258,7 +258,7 @@ TEST_CASE("PrimeIterator")
     // CHECK same containers
     CHECK(prIter2 == prIter3); // same position
     ++prIter3;
-    CHECK(*prIter3 == 2); 
+    CHECK(*prIter3 == 3); 
     CHECK(prIter2 != prIter3); // different position
     CHECK(prIter2 < prIter3); // different position
     CHECK(prIter3 > prIter2); // different position
@@ -267,8 +267,8 @@ TEST_CASE("PrimeIterator")
     // Check Order of elements
     // container: 19 7
 
-    CHECK(*prIter.begin() == 19);
-    CHECK(*(++prIter) == 7);
+    CHECK(*prIter.begin() == 7);
+    CHECK(*(++prIter) == 19);
     CHECK(++prIter == prIter.end());
     CHECK_THROWS_AS(*prIter, std::out_of_range); // prIter is at the end
 
@@ -276,9 +276,9 @@ TEST_CASE("PrimeIterator")
 
     // container: 19 7 13
 
-    CHECK(*prIter.begin() == 19);
-    CHECK(*(++prIter) == 7);
+    CHECK(*prIter.begin() == 7);
     CHECK(*(++prIter) == 13);
+    CHECK(*(++prIter) == 19);
     CHECK(++prIter == prIter.end());
 
     container2.removeElement(2);
