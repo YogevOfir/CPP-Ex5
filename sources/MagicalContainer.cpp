@@ -6,6 +6,7 @@ using namespace std;
 
 namespace ariel{
 
+    // prime check
     bool isPrime(int elem)
     {
         if (elem == 1)
@@ -29,6 +30,7 @@ namespace ariel{
         }
     }
 
+    // sorting originalElem vector by bubble sort
     void MagicalContainer::sortOriginalElem()
     {
         for(unsigned long i = 0; i < originalElem.size(); i++)
@@ -45,18 +47,22 @@ namespace ariel{
         }
     }
 
+    // fixing the sortedElem vector
     void MagicalContainer::fixSorted()
     {
         sortedElem.clear();
+        //add all elements to sortedElem
         for (auto it = originalElem.begin(); it != originalElem.end(); ++it)
         {
             sortedElem.push_back(&(*it));
         }
     }
 
+    // fixing the primeElem vector
     void MagicalContainer::fixPrime()
     {
         primeElem.clear();
+        //add all prime numbers to primeElem
         for (auto it = originalElem.begin(); it != originalElem.end(); ++it)
         {
             if (isPrime(*it))
@@ -66,12 +72,16 @@ namespace ariel{
         }
     }
 
+    // fixing the crossElem vector
     void MagicalContainer::fixCross()
     {
         crossElem.clear();
+        //add all elements to crossElem
+
         auto start = originalElem.begin();
         auto end = --originalElem.end();
 
+        // adding the elements to crossElem by crossing the originalElem vector
         while(start < end)
         {
             crossElem.push_back(&(*start));
@@ -79,6 +89,7 @@ namespace ariel{
             start++;
             end--;
         }
+        // if the vector is odd, add the middle element
         if (start == end)
         {
             crossElem.push_back(&(*start));
@@ -138,7 +149,7 @@ namespace ariel{
     }
 
     int MagicalContainer::size()
-    {
+    {   
         return originalElem.size();
     }
 
@@ -153,13 +164,16 @@ namespace ariel{
 
     // Constructors
 
+    // default constructor
     MagicalContainer::AscendingIterator::AscendingIterator(MagicalContainer& container) : container(container), iter(container.sortedElem.begin()), pos(0) {}
 
+    // copy constructor
     MagicalContainer::AscendingIterator::AscendingIterator(const AscendingIterator& other) : container(other.container), iter(other.iter), pos(other.pos) {}
 
+    // copy assignment operator
     MagicalContainer::AscendingIterator& MagicalContainer::AscendingIterator::operator=(const AscendingIterator& other)
     {
-        if(&container != &other.container) // if they are not the same container
+        if(&container != &other.container) // if they are not the same container then throw exception
         {
             throw std::runtime_error("Invalid argument");
         }
@@ -172,6 +186,7 @@ namespace ariel{
 
     MagicalContainer::AscendingIterator& MagicalContainer::AscendingIterator::operator++()
     {
+        // if we are at the end of the container then throw exception
         if(iter == container.sortedElem.end())
         {
             throw std::runtime_error("Out of range");
@@ -182,7 +197,8 @@ namespace ariel{
     }
 
     int MagicalContainer::AscendingIterator::operator*()
-    {
+    {   
+        // if we are at the end of the container then throw exception
         if(iter == container.sortedElem.end())
         {
             throw std::out_of_range("Out of range");
@@ -247,13 +263,16 @@ namespace ariel{
 
     // Constructors
 
+    // default constructor
     MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer& container) : container(container), iter(container.crossElem.begin()), pos(0) {}
 
+    // copy constructor
     MagicalContainer::SideCrossIterator::SideCrossIterator(const SideCrossIterator& other) : container(other.container), iter(other.iter), pos(other.pos) {}
 
+    // copy assignment operator
     MagicalContainer::SideCrossIterator& MagicalContainer::SideCrossIterator::operator=(const SideCrossIterator& other)
     {
-        if(&container != &other.container) // if they are not the same container
+        if(&container != &other.container) // if they are not the same container then throw exception
         {
             throw std::runtime_error("Invalid argument");
         }
@@ -265,7 +284,7 @@ namespace ariel{
 
     MagicalContainer::SideCrossIterator& MagicalContainer::SideCrossIterator::operator++()
     {
-        if(iter == container.crossElem.end())
+        if(iter == container.crossElem.end()) // if we are at the end of the container then throw exception
         {
             throw std::runtime_error("Out of range");
         }
@@ -276,7 +295,7 @@ namespace ariel{
 
     int& MagicalContainer::SideCrossIterator::operator*()
     {
-        if(iter == container.crossElem.end())
+        if(iter == container.crossElem.end()) // if we are at the end of the container then throw exception
         {
             throw std::out_of_range("Out of range");
         }
@@ -287,7 +306,7 @@ namespace ariel{
 
     bool MagicalContainer::SideCrossIterator::operator==(const SideCrossIterator& other) const
     {
-        if(&container != &other.container) // if they are not the same container
+        if(&container != &other.container) // if they are not the same container then throw exception
         {
             throw std::invalid_argument("Invalid argument");
         }
@@ -301,7 +320,7 @@ namespace ariel{
 
     bool MagicalContainer::SideCrossIterator::operator<(const SideCrossIterator& other) const
     {
-        if(&container != &other.container) // if they are not the same container
+        if(&container != &other.container) // if they are not the same container then throw exception
         {
             throw std::invalid_argument("Invalid argument");
         }
@@ -310,7 +329,7 @@ namespace ariel{
 
     bool MagicalContainer::SideCrossIterator::operator>(const SideCrossIterator& other) const
     {
-        if(&container != &other.container) // if they are not the same container
+        if(&container != &other.container) // if they are not the same container then throw exception
         {
             throw std::invalid_argument("Invalid argument");
         }
@@ -340,13 +359,16 @@ namespace ariel{
 
     // Constructors
 
+    // default constructor
     MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer& container) : container(container), iter(container.primeElem.begin()), pos(0) {}
 
+    // copy constructor
     MagicalContainer::PrimeIterator::PrimeIterator(const PrimeIterator& other) : container(other.container), iter(other.iter), pos(other.pos) {}
 
+    // copy assignment operator
     MagicalContainer::PrimeIterator& MagicalContainer::PrimeIterator::operator=(const PrimeIterator& other)
     {
-        if(&container != &other.container) // if they are not the same container
+        if(&container != &other.container) // if they are not the same container then throw exception
         {
             throw std::runtime_error("Invalid argument");
         }
@@ -358,7 +380,7 @@ namespace ariel{
 
     MagicalContainer::PrimeIterator& MagicalContainer::PrimeIterator::operator++()
     {
-        if(iter == container.primeElem.end())
+        if(iter == container.primeElem.end()) // if we are at the end of the container then throw exception
         {
             throw std::runtime_error("Out of range");
         }
@@ -369,7 +391,7 @@ namespace ariel{
 
     int& MagicalContainer::PrimeIterator::operator*()
     {   
-        if(iter == container.primeElem.end())
+        if(iter == container.primeElem.end()) // if we are at the end of the container then throw exception
         {
             throw std::out_of_range("Out of range");
         }
@@ -380,7 +402,7 @@ namespace ariel{
 
     bool MagicalContainer::PrimeIterator::operator==(const PrimeIterator& other) const
     {
-        if(&container != &other.container) // if they are not the same container
+        if(&container != &other.container) // if they are not the same container then throw exception
         {
             throw std::invalid_argument("Invalid argument");
         }
@@ -394,7 +416,7 @@ namespace ariel{
 
     bool MagicalContainer::PrimeIterator::operator<(const PrimeIterator& other) const
     {
-        if(&container != &other.container) // if they are not the same container
+        if(&container != &other.container) // if they are not the same container then throw exception
         {
             throw std::invalid_argument("Invalid argument");
         }
@@ -403,7 +425,7 @@ namespace ariel{
 
     bool MagicalContainer::PrimeIterator::operator>(const PrimeIterator& other) const
     {
-        if(&container != &other.container) // if they are not the same container
+        if(&container != &other.container) // if they are not the same container then throw exception
         {
             throw std::invalid_argument("Invalid argument");
         }

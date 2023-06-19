@@ -37,8 +37,8 @@ namespace ariel
 
             public:
                 // Constructors
-                AscendingIterator(MagicalContainer& container);
-                AscendingIterator(const AscendingIterator& other);
+                AscendingIterator(MagicalContainer& container); // default constructor
+                AscendingIterator(const AscendingIterator& other); // copy constructor
                 ~AscendingIterator() = default;
                 AscendingIterator& operator=(const AscendingIterator& other); // Copy assignment operator
                 AscendingIterator(AscendingIterator&& other) noexcept = default; // Move constructor
@@ -69,8 +69,8 @@ namespace ariel
 
             public:
                 // Constructors
-                SideCrossIterator(MagicalContainer& container);
-                SideCrossIterator(const SideCrossIterator& other);
+                SideCrossIterator(MagicalContainer& container); // Default constructor
+                SideCrossIterator(const SideCrossIterator& other); // copy constructor
                 ~SideCrossIterator() = default;
                 SideCrossIterator& operator=(const SideCrossIterator& other); // Copy assignment operator
                 SideCrossIterator(SideCrossIterator&& other) noexcept = default; // Move constructor
@@ -101,8 +101,8 @@ namespace ariel
 
             public:
                 // Constructors
-                PrimeIterator(MagicalContainer& container);
-                PrimeIterator(const PrimeIterator& other);
+                PrimeIterator(MagicalContainer& container); // default constructor
+                PrimeIterator(const PrimeIterator& other); // copy constructor
                 ~PrimeIterator() = default;
                 PrimeIterator& operator=(const PrimeIterator& other); // Copy assignment operator
                 PrimeIterator(PrimeIterator&& other) noexcept = default; // Move constructor
